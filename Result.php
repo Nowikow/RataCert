@@ -107,7 +107,7 @@ mail(
 
 <footer>
     <p class="sign">Ваш индивидуальный номер сертификата</p>
-    <span> Заглушка </span>
+    <span>' . $code  . '</span>
 </footer>
 
 </div>
