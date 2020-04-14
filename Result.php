@@ -46,20 +46,72 @@ mail(
     "Ваш сертификат",
     '    
                 <html lang="en-ru">
-                <head>
-                <meta charset="UTF-8">
-                </head>
-                <div lang="en-ru">
-                <h1>Вы приобрели сертификат на рыцарские продукты 2020-2021 гг.</h1>
+<head>
+<meta charset="UTF-8">
+    <style>
+        div {
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            width: 100%;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+        }
+        h1 {
+            margin-top: 30px;
+            width: 55%;
+            color: white;
+        }
 
-                <p>Спасибо за доверие и поддержку нашего сообщества!</p>
+        .sign {
+            text-transform: uppercase;
+            width: 35%;
+            margin-top: 30px;
+        }
 
-                <p>Ваш индивидуальный номер сертификата</p>
-    
-                <p>Заглушка</p>
-    
-                </div>
-              '
+        img {
+            width: 100%;
+        }
+
+        footer {
+            width: 100%;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        footer :nth-child(2) {
+            padding: 10px 5px 10px 5px;
+            background-color: white;
+            width: 30%;
+            color: black;
+            font-size: 30pt;
+
+        }
+    </style>
+</head>
+<div>
+    <header>
+        <h1>Вы приобрели сертификат на рыцарские продукты 2020-2021 гг.</h1>
+    </header>
+
+<p class="sign">Спасибо за доверие и поддержку нашего сообщества!</p>
+    <img src="./Group%201.png">
+
+<footer>
+    <p class="sign">Ваш индивидуальный номер сертификата</p>
+    <span> .$code </span>
+</footer>
+
+</div>
+'
 );
 
 exit();
