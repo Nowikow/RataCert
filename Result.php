@@ -90,7 +90,7 @@ mail(
         footer :nth-child(2) {
             padding: 10px 5px 10px 5px;
             background-color: white;
-            width: 30%;
+            width: 300px;
             color: black;
             font-size: 30pt;
 
