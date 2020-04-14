@@ -4,7 +4,6 @@ include __DIR__ . './form.html';
 $login = "turnir.moscow";
 $amount = floatval(8000.00);
 $pwd1 = "zK4gs3Bjf15wHRxBxg3y";
-$pwd2="I5baCa9jtQ541WrpitLO";
 $signature = md5($login . ":" . $amount . ":" . $pwd1);
 
 ?>
