@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Покупка</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            margin-top: 5%;
+            width: 30%;
+            font-size: 18pt;
+        }
+
+        form :nth-child(n+1) {
+            margin-top: 20px;
+            font-size: 18pt;
+        }
+
+
+    </style>
+</head>
+<body>
+<form method="post" action="./Result.php">
+    <label>Введите ФИО</label>
+    <input name="Shp_name" type="text" required>
+    <label>Введите Ваш email</label>
+    <input name=" Shp_mail" type="email" required>
+    <input type="submit" value="Оплатить">
+</form>
+</body>
+</html>
