@@ -74,7 +74,7 @@ mail(
             margin-top: 30px;
         }
 
-        img {
+        a {
             width: 100%;
         }
 
@@ -103,7 +103,8 @@ mail(
     </header>
 
 <p class="sign">Спасибо за доверие и поддержку нашего сообщества!</p>
-    <img src="./Group%201.png">
+
+<a href="https://ibb.co/brNDLbd"><img src="https://i.ibb.co/BgTFjns/Group-1.png" alt="Group-1" border="0"></a>
 
 <footer>
     <p class="sign">Ваш индивидуальный номер сертификата</p>
