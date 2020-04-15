@@ -92,8 +92,8 @@ mail(
             background-color: white;
             width: 300px;
             color: black;
-            font-size: 30pt;
-
+            font-size: 30pt;  
+            margin-bottom: 30px;
         }
     </style>
 </head>
