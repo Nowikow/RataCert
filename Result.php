@@ -9,16 +9,17 @@
  $SignatureValue = $_REQUEST['SignatureValue'];
  $Culture = $_REQUEST['Culture'];
 
- $sert_code = get_new_code();;
+ $sert_code = get_new_code();
+ $connect= mysqli_connect(
+     "localhost",
+     "root",
+     '',
+     "my_db"
+ );
 
 //Проверка кода на соответствие по БД
 
-$stm = mysqli_query(mysqli_connect(
-    "localhost",
-    "root",
-    '',
-    "my_db"
-),
+$stm = mysqli_query($connect,
     "SELECT code FROM orders WHERE code = '$sert_code'"
 );
 
@@ -29,12 +30,7 @@ $check = mysqli_fetch_assoc($stm);
 while ($check) {
     $sert_code=get_new_code();
 
-    $stm = mysqli_query(mysqli_connect(
-        "localhost",
-        "root",
-        '',
-        "my_db"
-    ),
+    $stm = mysqli_query($connect,
         "SELECT code FROM orders WHERE code = '$sert_code'"
     );
     $check = mysqli_fetch_assoc($stm);
@@ -63,6 +59,16 @@ if ($IsTest) {
      ''
  );
 
+//Проверка отправки лишних запросов от кассы
+$checkId = mysqli_query($connect,
+    "SELECT count(*) FROM orders WHERE id = '$InvId'"
+);
+$count = mysqli_fetch_row($checkId);
+foreach ($count as $key) {
+    if ($key>0) {
+        exit();
+    }
+};
 
  $dbh->exec('SET NAMES UTF8');
  $stm = $dbh->prepare(
