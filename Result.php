@@ -8,7 +8,16 @@
  $Shp_name = $_REQUEST['Shp_name'];
  $SignatureValue = $_REQUEST['SignatureValue'];
  $Culture = $_REQUEST['Culture'];
-
+ $date = date("r");
+ $sert_code = get_new_code();
+ 
+ //Конфигурация обычных запросов к БД
+ $connect= mysqli_connect(
+     "localhost",
+     "root",
+     '',
+     "my_db"
+ );
 
  // Подключение к БД PDO
  $dbh = new \PDO(
@@ -18,7 +27,6 @@
  );
 
 //Проверка наличия таблицы PDO
-
 $dbh->exec(
     'CREATE TABLE IF NOT EXISTS orders (
         id INT NOT NULL AUTO_INCREMENT ,
@@ -30,17 +38,8 @@ $dbh->exec(
         PRIMARY KEY (id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
 );
-
- $sert_code = get_new_code();
- $connect= mysqli_connect(
-     "localhost",
-     "root",
-     '',
-     "my_db"
- );
-
+ 
 //Проверка кода на соответствие по БД
-
 $stm = mysqli_query($connect,
     "SELECT code FROM orders WHERE code = '$sert_code'"
 );
@@ -58,9 +57,6 @@ while ($check) {
     $check = mysqli_fetch_assoc($stm);
 
 }
-
- $date = date("r");
-
 
 if ($IsTest) {
      $pwd2 = "###";
