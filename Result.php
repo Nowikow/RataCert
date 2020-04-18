@@ -9,6 +9,28 @@
  $SignatureValue = $_REQUEST['SignatureValue'];
  $Culture = $_REQUEST['Culture'];
 
+
+ // Подключение к БД PDO
+ $dbh = new \PDO(
+     'mysql:host=localhost;dbname=my_db;',
+     'root',
+     ''
+ );
+
+//Проверка наличия таблицы PDO
+
+$dbh->exec(
+    'CREATE TABLE IF NOT EXISTS orders (
+        id INT NOT NULL AUTO_INCREMENT ,
+        email VARCHAR(255) NOT NULL ,
+        name VARCHAR(255) NOT NULL ,
+        code VARCHAR(255) NOT NULL ,
+        outsumm VARCHAR(255) NOT NULL ,
+        date VARCHAR(255) NOT NULL ,
+        PRIMARY KEY (id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+);
+
  $sert_code = get_new_code();
  $connect= mysqli_connect(
      "localhost",
@@ -52,13 +74,6 @@ if ($IsTest) {
      exit();
  }
 
- // Подключение к БД для бинда
- $dbh = new \PDO(
-     'mysql:host=localhost;dbname=my_db;',
-     'root',
-     ''
- );
-
 //Проверка отправки лишних запросов от кассы
 $checkId = mysqli_query($connect,
     "SELECT count(*) FROM orders WHERE id = '$InvId'"
@@ -70,6 +85,7 @@ foreach ($count as $key) {
     }
 };
 
+//Биндинг значений в БД PDO
  $dbh->exec('SET NAMES UTF8');
  $stm = $dbh->prepare(
      'INSERT INTO orders (id, email, name, code, outsumm, date) 
