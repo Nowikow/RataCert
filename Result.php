@@ -52,7 +52,7 @@ if ($IsTest) {
      exit();
  }
 
- // Подключение к БД
+ // Подключение к БД для бинда
  $dbh = new \PDO(
      'mysql:host=localhost;dbname=my_db;',
      'root',
