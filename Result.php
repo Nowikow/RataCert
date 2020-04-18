@@ -47,7 +47,6 @@ $stm = mysqli_query($connect,
 $check = mysqli_fetch_assoc($stm);
 
 //Цикл перезаписи, если код существует
-
 while ($check) {
     $sert_code=get_new_code();
 
