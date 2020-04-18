@@ -1,118 +1,168 @@
 <?php
 
-$pwd2='I5baCa9jtQ541WrpitLO';
+ $IsTest = ($_REQUEST['IsTest'] == 1) ? true : false;
 
-// Генерация кода для сертификата
+ $OutSum = $_REQUEST['OutSum'];
+ $InvId = intval($_REQUEST['InvId']);
+ $Shp_email = $_REQUEST['Shp_email'];
+ $Shp_name = $_REQUEST['Shp_name'];
+ $SignatureValue = $_REQUEST['SignatureValue'];
+ $Culture = $_REQUEST['Culture'];
 
-$chars="qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP";
+ $sert_code = get_new_code();;
 
-$max=16;
+//Проверка кода на соответствие по БД
 
-$size=StrLen($chars)-1;
+$stm = mysqli_query(mysqli_connect(
+    "localhost",
+    "root",
+    '',
+    "my_db"
+),
+    "SELECT code FROM orders WHERE code = '$sert_code'"
+);
 
-$code=null;
+$check = mysqli_fetch_assoc($stm);
 
-while($max--)
-    $code.=$chars[rand(0,$size)];
+//Цикл перезаписи, если код существует
 
-//Проверка подписи
-if ( strtolower($_POST['SignatureValue']) != strtolower(md5($_POST['OutSum'] . ":" . $pwd2)) ) {
-    // не совпадает подпись
-    echo "ERR: invalid signature";
-    exit();
+while ($check) {
+    $sert_code=get_new_code();
+
+    $stm = mysqli_query(mysqli_connect(
+        "localhost",
+        "root",
+        '',
+        "my_db"
+    ),
+        "SELECT code FROM orders WHERE code = '$sert_code'"
+    );
+    $check = mysqli_fetch_assoc($stm);
+
 }
 
-echo "OK";
-
-//Работа с БД
-$dbh = new \PDO(
-    'mysql:host=localhost;dbname=my_db;',
-    'root',
-    ''
-);
-
-$dbh->exec('SET NAMES UTF8');
-
-$stm = $dbh->prepare('INSERT INTO users (`email`, `name`, `code`) VALUES (:email, :name, :code)');
-$stm->bindValue('email', $_POST['Shp_mail']);
-$stm->bindValue('name', $_POST['Shp_name']);
-$stm->bindValue('code', $code);
-$stm->execute();
+ $date = date("r");
 
 
-//Отправка письма
-mail(
-    $_POST['Shp_mail'],
-    "Ваш сертификат",
-    '    
-                <html lang="en-ru">
-<head>
-<meta charset="UTF-8">
-    <style>
-        div {
-            width: 100%;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        header {
-            width: 100%;
-            background-color: black;
-            display: flex;
-            justify-content: center;
-        }
-        h1 {
-            margin-top: 30px;
-            width: 55%;
-            color: white;
-        }
+if ($IsTest) {
+     $pwd2 = "###";
+ } else {
+     $pwd2 = "###";
+ }
 
-        .sign {
-            text-transform: uppercase;
-            width: 35%;
-            margin-top: 30px;
-        }
+// final Проверка подписи
+ if (strtolower($SignatureValue) != strtolower(md5($OutSum . ":" . $InvId . ":" . $pwd2 . ":Shp_email=" . $Shp_email . ":Shp_name=" . $Shp_name))) {
+     echo "ERR: invalid signature";
+     exit();
+ }
 
-        img {
-            width: 100%;
-        }
+ // Подключение к БД
+ $dbh = new \PDO(
+     'mysql:host=localhost;dbname=my_db;',
+     'root',
+     ''
+ );
 
-        footer {
-            width: 100%;
-            background-color: black;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
 
-        footer :nth-child(2) {
-            padding: 10px 5px 10px 5px;
-            background-color: white;
-            width: 300px;
-            color: black;
-            font-size: 30pt;  
-            margin-bottom: 30px;
-        }
-    </style>
-</head>
-<div>
-    <header>
-        <h1>Вы приобрели сертификат на рыцарские продукты 2020-2021 гг.</h1>
-    </header>
+ $dbh->exec('SET NAMES UTF8');
+ $stm = $dbh->prepare(
+     'INSERT INTO orders (id, email, name, code, outsumm, date) 
+                VALUES (:invid, :email, :name, :code, :outsumm, :date)');
+ $stm->bindValue('invid', $InvId);
+ $stm->bindValue('email', $Shp_email);
+ $stm->bindValue('name', $Shp_name);
+ $stm->bindValue('code', $sert_code);
+ $stm->bindValue('outsumm', $OutSum);
+$stm->bindValue('date', $date);
+ $stm->execute();
 
-<p class="sign">Спасибо за доверие и поддержку нашего сообщества!</p>
+ // final Отправка письма
+ $headers = "MIME-Version: 1.0\r\n";
+ $headers .= "Content-type: text/html; charset=UTF-8\r\n";
+ mail(
+     $Shp_email,
+     "Ваш сертификат",
+     '
+                 <html lang="en-ru">
+ <head>
+ <meta charset="UTF-8">
+     <style>
+         div {
+             width: 100%;
+             text-align: center;
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+         }
+         header {
+             width: 100%;
+             background-color: black;
+             display: flex;
+             justify-content: center;
+         }
+         h1 {
+             margin-top: 30px;
+             width: 55%;
+             color: white;
+         }
+ 
+         .sign {
+             text-transform: uppercase;
+             width: 35%;
+             margin-top: 30px;
+         }
+ 
+         img {
+             width: 100%;
+         }
+ 
+         footer {
+             width: 100%;
+             background-color: black;
+             color: white;
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+         }
+ 
+         footer :nth-child(2) {
+             padding: 10px 5px 10px 5px;
+             background-color: white;
+             width: 300px;
+             color: black;
+             font-size: 30pt;
+ 
+         }
+     </style>
+ </head>
+ <div>
+     <header>
+         <h1>Вы приобрели сертификат на рыцарские продукты 2020-2021 гг.</h1>
+     </header>
+ 
+ <p class="sign">Спасибо за доверие и поддержку нашего сообщества!</p>
+     <img src="./Group%201.png">
+ 
+ <footer>
+     <p class="sign">Ваш индивидуальный номер сертификата</p>
+     <span>' . $sert_code . '</span>
+ </footer>
+ 
+ </div>',
+     $headers
+ );
 
-<img src="https://cdn1.savepice.ru/uploads/2020/4/15/69c891fac1ea9a595963a7f3aa3dc247-full.png">
+ // Генерация кода для сертификата
+ function get_new_code()
+ {
+     $chars = "qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP";
+     $size = StrLen($chars) - 1;
+     $code = null;
+     $max = 16;
+     while ($max--) {
+         $code .= $chars[rand(0, $size)];
+     }
+     return $code;
+ }
 
-<footer>
-    <p class="sign">Ваш индивидуальный номер сертификата</p>
-    <span>' . $code  . '</span>
-</footer>
-
-</div>
-'
-);
-
-exit();
+ exit();
