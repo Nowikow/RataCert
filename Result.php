@@ -101,71 +101,68 @@ $stm->bindValue('date', $date);
      "Ваш сертификат",
      '
                  <html lang="en-ru">
- <head>
- <meta charset="UTF-8">
-     <style>
-         div {
-             width: 100%;
-             text-align: center;
-             display: flex;
-             flex-direction: column;
-             align-items: center;
-         }
-         header {
-             width: 100%;
-             background-color: black;
-             display: flex;
-             justify-content: center;
-         }
-         h1 {
-             margin-top: 30px;
-             width: 55%;
-             color: white;
-         }
- 
-         .sign {
-             text-transform: uppercase;
-             width: 35%;
-             margin-top: 30px;
-         }
- 
-         img {
-             width: 100%;
-         }
- 
-         footer {
-             width: 100%;
-             background-color: black;
-             color: white;
-             display: flex;
-             flex-direction: column;
-             align-items: center;
-         }
- 
-         footer :nth-child(2) {
-             padding: 10px 5px 10px 5px;
-             background-color: white;
-             width: 300px;
-             color: black;
-             font-size: 30pt;
- 
-         }
-     </style>
- </head>
- <div>
-     <header>
-         <h1>Вы приобрели сертификат на рыцарские продукты 2020-2021 гг.</h1>
-     </header>
- 
- <p class="sign">Спасибо за доверие и поддержку нашего сообщества!</p>
-     <img src="./Group%201.png">
- 
- <footer>
-     <p class="sign">Ваш индивидуальный номер сертификата</p>
-     <span>' . $sert_code . '</span>
- </footer>
- 
- </div>',
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table {
+            margin: auto;
+            width: 600px;
+            text-align: center;
+        }
+        
+        .blackback {
+            background-color: black;
+            color: white;
+        }
+        
+        img {
+            width: 100%;
+        }
+        
+        .headerMail {
+            padding: 20px 0 20px 0;
+            font-size: 14pt;
+        }
+        
+        .thanksMail {
+            padding: 10px 0 10px 0;
+            font-size: 10pt;
+        }
+        
+        .footerPad {
+            padding-bottom: 20px;
+        }
+        
+        p {
+            padding-top: 10px;
+        }
+        
+        span {
+            font-size: 14pt;
+            padding: 10px 10px 10px 10px;
+            color: black;
+            background-color: white;
+        }
+    </style>
+</head>
+<table>
+    <tr class='blackback'>
+        <td class='headerMail'>Вы приобрели сертификат на рыцарские продукты 2020-2021 гг.</td>
+    </tr>
+    <tr>
+        <td class='thanksMail'>СПАСИБО ЗА ДОВЕРИЕ И ПОДДЕРЖКУ НАШЕГО СООБЩЕСТВА!</td>
+    </tr>
+    <tr>
+        <td><img src="https://turnir.moscow/wp-content/uploads/slack-imgs.png" alt="PIC"></td>
+    </tr>
+    <tr class='blackback'>
+        <td class="footerPad">
+            <p>ВАШ ИНДИВИДУАЛЬНЫЙ НОМЕР СЕРТИФИКАТА</p>
+            <span>' . $sert_code . '</span>
+        </td>
+    </tr>
+</table>',
      $headers
  );
 
